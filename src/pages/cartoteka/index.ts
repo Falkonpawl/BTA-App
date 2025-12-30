@@ -1,2 +1,2 @@
-export { CartotekaScreen } from "./ui";
+export { CartotekaPage } from "./ui";
 

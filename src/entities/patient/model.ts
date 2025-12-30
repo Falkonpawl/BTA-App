@@ -10,7 +10,7 @@ export interface Patient {
   reminderInterval?: string;
   messenger?: MessengerType;
   refuseReminders?: boolean;
-  imageUrl?: string;
+  imageUrl?: string | number; // string for URI, number for require()
   createdAt: Date;
   updatedAt: Date;
 }

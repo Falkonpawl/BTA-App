@@ -7,7 +7,7 @@ import { AddPatientScreen } from "@/pages/add-patient";
 import { AppointmentDetailPage } from "@/pages/appointment-detail";
 import { AppointmentSuccessScreen } from "@/pages/appointment-success";
 import { ArchiveScreen } from "@/pages/archive";
-import { CartotekaScreen } from "@/pages/cartoteka";
+import { CartotekaPage } from "@/pages/cartoteka";
 import { CameraScreen } from "@/pages/camera";
 import { CompleteAppointmentScreen } from "@/pages/complete-appointment";
 import { DriverRegistrationScreen } from "@/pages/driver-registration";
@@ -40,7 +40,7 @@ export function MainStack() {
         component={AppointmentDetailPage}
       />
       <Stack.Screen name="Archive" component={ArchiveScreen} />
-      <Stack.Screen name="Cartoteka" component={CartotekaScreen} />
+      <Stack.Screen name="Cartoteka" component={CartotekaPage} />
       <Stack.Screen name="AddPatient" component={AddPatientScreen} />
       <Stack.Screen
         name="DriverRegistration"
