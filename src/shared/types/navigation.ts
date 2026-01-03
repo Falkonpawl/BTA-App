@@ -3,6 +3,7 @@ import type {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import type { SerializedPatient } from "@/entities/patient";
 
 /**
  * Root Stack Navigator - верхний уровень навигации
@@ -71,6 +72,9 @@ export type MainStackParamList = {
     photos: { zoneId: string; uri: string }[];
   };
   Cartoteka: undefined;
+  PatientDetail: { patient: SerializedPatient };
+  EditPatient: { patient: SerializedPatient };
+  AppointmentLog: { patient: SerializedPatient };
   // Здесь можно добавить другие экраны основного стека
 };
 
@@ -99,6 +103,7 @@ export type AppointmentDetailScreenProps =
 
 declare global {
   namespace ReactNavigation {
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     interface RootParamList extends RootStackParamList {}
   }
 }

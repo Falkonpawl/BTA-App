@@ -1,6 +1,6 @@
 import { Appointment, driveToAppointment } from "@/entities/appointment"
 import { QuickActionType } from "@/features/quick-actions"
-import { useLogout, usePerformerActiveDrives, useTripsNow } from "@/shared/api"
+import { useLogout, usePerformerActiveDrives } from "@/shared/api"
 import { MainStackScreenProps } from "@/shared/types/navigation"
 import {
   Button,
@@ -37,11 +37,11 @@ export function HomePage({ navigation }: Props) {
     refetchOnWindowFocus: false,
   })
 
-  // Fetch trips waiting for clients
-  const tripsNow = useTripsNow(undefined, {
-    refetchOnMount: true,
-    refetchOnWindowFocus: false,
-  })
+  // Fetch trips waiting for clients (currently unused)
+  // const tripsNow = useTripsNow(undefined, {
+  //   refetchOnMount: true,
+  //   refetchOnWindowFocus: false,
+  // })
 
   // Convert API drives to appointments
   const appointments = useMemo(() => {

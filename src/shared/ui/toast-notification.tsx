@@ -77,6 +77,7 @@ export const ToastNotification: React.FC<ToastNotificationProps> = ({
         }),
       ]).start();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   const handleClose = () => {

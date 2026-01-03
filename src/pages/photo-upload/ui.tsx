@@ -12,15 +12,11 @@ type Props = NativeStackScreenProps<MainStackParamList, "PhotoUploadScreen">;
 type UploadState = "uploading" | "error" | "success";
 
 export function PhotoUploadScreen({ route, navigation }: Props) {
-  const { appointmentType, photos } = route.params;
+  const { appointmentType } = route.params;
+  // photos available: route.params.photos
   const [uploadState, setUploadState] = useState<UploadState>("uploading");
 
-  useEffect(() => {
-    // Симуляция загрузки
-    uploadPhotos();
-  }, []);
-
-  const uploadPhotos = async () => {
+  const uploadPhotos = React.useCallback(async () => {
     try {
       // TODO: Implement actual photo upload logic
       await new Promise((resolve) => setTimeout(resolve, 3000));
@@ -37,10 +33,15 @@ export function PhotoUploadScreen({ route, navigation }: Props) {
           navigation.navigate("Home");
         }, 1000);
       }
-    } catch (error) {
+    } catch {
       setUploadState("error");
     }
-  };
+  }, [navigation]);
+
+  useEffect(() => {
+    // Симуляция загрузки
+    uploadPhotos();
+  }, [uploadPhotos]);
 
   const handleRetry = () => {
     setUploadState("uploading");

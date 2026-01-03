@@ -7,7 +7,6 @@ import SyringeDozaIcon from "@/src/shared/icons/SyringeDozaIcon";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
 import {
-  Dimensions,
   ScrollView,
   StyleSheet,
   Switch,
@@ -21,18 +20,21 @@ type Props = NativeStackScreenProps<
 >;
 
 export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
-  const { appointmentType, selectedZones, photos, drugName } = route.params;
-  const [zoneDosages, setZoneDosages] = useState<Record<string, number>>({});
+  const { appointmentType, selectedZones, photos } = route.params;
+  // drugName available: route.params.drugName
+  // zoneDosages and setZoneDosages available but unused
+  // const [zoneDosages, setZoneDosages] = useState<Record<string, number>>({});
   const [skipInFuture, setSkipInFuture] = useState(false);
 
-  const handleDosageChange = (zoneId: string, increment: boolean) => {
-    setZoneDosages((prev) => ({
-      ...prev,
-      [zoneId]: increment
-        ? (prev[zoneId] || 0) + 1
-        : Math.max(0, (prev[zoneId] || 0) - 1),
-    }));
-  };
+  // handleDosageChange available but unused
+  // const handleDosageChange = (zoneId: string, increment: boolean) => {
+  //   setZoneDosages((prev) => ({
+  //     ...prev,
+  //     [zoneId]: increment
+  //       ? (prev[zoneId] || 0) + 1
+  //       : Math.max(0, (prev[zoneId] || 0) - 1),
+  //   }));
+  // };
 
   const handleConfirm = () => {
     // Navigate to injection points marking
@@ -44,7 +46,7 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
     });
   };
 
-  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+  // screenWidth and screenHeight available: Dimensions.get("window")
 
   return (
     <MainLayout

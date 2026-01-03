@@ -1,0 +1,2 @@
+export { AppointmentLogPage } from "./ui";
+

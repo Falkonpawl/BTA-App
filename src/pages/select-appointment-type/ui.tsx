@@ -44,7 +44,7 @@ export function SelectAppointmentTypeScreen({ navigation }: Props) {
       duration: 300,
       useNativeDriver: false,
     }).start();
-  }, [showOtherOptions]);
+  }, [showOtherOptions, heightAnim, rotateAnim]);
 
   const rotateInterpolate = rotateAnim.interpolate({
     inputRange: [0, 1],

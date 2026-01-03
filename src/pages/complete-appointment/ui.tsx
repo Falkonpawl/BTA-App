@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingRight: 15,
     lineHeight: 24,
+    textAlign: "center",
   },
   switch: {
     transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
@@ -297,6 +298,7 @@ const styles = StyleSheet.create({
   reminderSection: {
     paddingHorizontal: 30,
     marginBottom: 20,
+    alignItems: "center",
   },
   reminderTitle: {
     fontFamily: "Montserrat",
@@ -304,12 +306,14 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: "#222221",
     marginBottom: 20,
+    textAlign: "center",
   },
   reminderOption: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 16,
+    width: "100%",
   },
   reminderOptionText: {
     fontFamily: "Montserrat",
@@ -318,6 +322,7 @@ const styles = StyleSheet.create({
     color: "#222221",
     flex: 1,
     paddingRight: 15,
+    textAlign: "center",
   },
   buttonContainer: {
     paddingHorizontal: 25,

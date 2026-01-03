@@ -1,5 +1,5 @@
 import * as React from "react";
-import Svg, { G, Path, Defs, LinearGradient, Stop, ClipPath, Rect } from "react-native-svg";
+import Svg, { G, Path, Defs, LinearGradient, Stop, ClipPath } from "react-native-svg";
 
 const CartotekaIcon = () => (
   <Svg

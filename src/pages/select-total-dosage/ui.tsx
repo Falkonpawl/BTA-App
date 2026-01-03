@@ -5,22 +5,25 @@ import DozaEllipseIcon from "@/src/shared/icons/DozaEllipseIcon";
 import SyringeDozaIcon from "@/src/shared/icons/SyringeDozaIcon";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useState } from "react";
-import { Dimensions, StyleSheet, Switch, Text, View } from "react-native";
+import { StyleSheet, Switch, Text, View } from "react-native";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SelectTotalDosage">;
 
 export function SelectTotalDosageScreen({ route, navigation }: Props) {
-  const { appointmentType, selectedZones, photos, drugName } = route.params;
-  const [totalDosage, setTotalDosage] = useState(0);
+  const { appointmentType, selectedZones, photos } = route.params;
+  // drugName available: route.params.drugName
+  // totalDosage and setTotalDosage available but unused
+  // const [totalDosage, setTotalDosage] = useState(0);
   const [skipInFuture, setSkipInFuture] = useState(false);
 
-  const handleDosageChange = (increment: boolean) => {
-    if (increment) {
-      setTotalDosage((prev) => prev + 1);
-    } else {
-      setTotalDosage((prev) => Math.max(0, prev - 1));
-    }
-  };
+  // handleDosageChange available but unused
+  // const handleDosageChange = (increment: boolean) => {
+  //   if (increment) {
+  //     setTotalDosage((prev) => prev + 1);
+  //   } else {
+  //     setTotalDosage((prev) => Math.max(0, prev - 1));
+  //   }
+  // };
 
   const handleConfirm = () => {
     // Navigate to injection points marking
@@ -32,7 +35,7 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
     });
   };
 
-  const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
+  // screenWidth and screenHeight available: Dimensions.get("window")
 
   return (
     <MainLayout

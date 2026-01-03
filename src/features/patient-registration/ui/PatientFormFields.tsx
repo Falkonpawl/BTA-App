@@ -1,5 +1,4 @@
 import { Select, TextArea, TextInput } from "@/shared/ui";
-import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { PatientFormData } from "../model";
@@ -29,16 +28,6 @@ export function PatientFormFields({
 }: PatientFormFieldsProps) {
   return (
     <>
-      {/* Icon and Title */}
-      <View style={styles.iconSection}>
-        <View style={styles.iconContainer}>
-          <Ionicons name="person-add" size={26} color="#56b5b3" />
-        </View>
-        <Text style={styles.subtitle}>
-          Заполните информацию о новом пациенте
-        </Text>
-      </View>
-
       {/* Form Fields */}
       <View style={styles.formContainer}>
         {/* First Name */}
@@ -130,24 +119,6 @@ export function PatientFormFields({
 }
 
 const styles = StyleSheet.create({
-  iconSection: {
-    alignItems: "center",
-    marginTop: 24,
-    marginBottom: 32,
-  },
-  iconContainer: {
-    width: 26,
-    height: 26,
-    marginBottom: 16,
-  },
-  subtitle: {
-    color: "#222221",
-    fontSize: 16,
-    fontWeight: "500",
-    textAlign: "center",
-    paddingHorizontal: 48,
-    fontFamily: "Montserrat",
-  },
   formContainer: {
     paddingHorizontal: 24,
     gap: 10,

@@ -21,6 +21,9 @@ import { SelectInjectionZonesScreen } from "@/pages/select-injection-zones";
 import { SelectSeparateDosagesScreen } from "@/pages/select-separate-dosages";
 import { SelectTotalDosageScreen } from "@/pages/select-total-dosage";
 import { UserRegistrationScreen } from "@/pages/user-registration";
+import { PatientDetailPage } from "@/pages/patient-detail";
+import { EditPatientScreen } from "@/pages/edit-patient";
+import { AppointmentLogPage } from "@/pages/appointment-log";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
@@ -41,7 +44,10 @@ export function MainStack() {
       />
       <Stack.Screen name="Archive" component={ArchiveScreen} />
       <Stack.Screen name="Cartoteka" component={CartotekaPage} />
+      <Stack.Screen name="PatientDetail" component={PatientDetailPage} />
       <Stack.Screen name="AddPatient" component={AddPatientScreen} />
+      <Stack.Screen name="EditPatient" component={EditPatientScreen} />
+      <Stack.Screen name="AppointmentLog" component={AppointmentLogPage} />
       <Stack.Screen
         name="DriverRegistration"
         component={DriverRegistrationScreen}

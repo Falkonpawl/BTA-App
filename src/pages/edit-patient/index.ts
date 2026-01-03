@@ -1,0 +1,2 @@
+export { EditPatientScreen } from "./ui";
+

@@ -1,4 +1,4 @@
-import Svg, { Path, G, Defs, LinearGradient, Stop, Mask, ClipPath, Rect, Circle } from "react-native-svg";
+import Svg, { Path, Defs, LinearGradient, Stop } from "react-native-svg";
 import * as React from "react";
 
 const BookIcon = () => (

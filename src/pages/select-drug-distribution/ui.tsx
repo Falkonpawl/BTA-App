@@ -5,7 +5,6 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
-  Dimensions,
   StyleSheet,
   Switch,
   Text,
@@ -50,7 +49,7 @@ export function SelectDrugDistributionScreen({ route, navigation }: Props) {
     }
   };
 
-  const { width: screenWidth } = Dimensions.get("window");
+  // screenWidth available: Dimensions.get("window").width
 
   return (
     <MainLayout
@@ -87,26 +86,26 @@ export function SelectDrugDistributionScreen({ route, navigation }: Props) {
                 <View style={styles.iconGrid}>
                   <LinearGradient
                     colors={["#F4F4F4", "#E2E2E2"]}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    start={{ x: 0.5, y: 1 }}
+                    end={{ x: 0.5, y: 0 }}
                     style={styles.smallSquare}
                   />
                   <LinearGradient
                     colors={["#F4F4F4", "#E2E2E2"]}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    start={{ x: 0.5, y: 1 }}
+                    end={{ x: 0.5, y: 0 }}
                     style={styles.smallSquare}
                   />
                   <LinearGradient
                     colors={["#F4F4F4", "#E2E2E2"]}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    start={{ x: 0.5, y: 1 }}
+                    end={{ x: 0.5, y: 0 }}
                     style={styles.smallSquare}
                   />
                   <LinearGradient
                     colors={["#F4F4F4", "#E2E2E2"]}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    start={{ x: 0.5, y: 1 }}
+                    end={{ x: 0.5, y: 0 }}
                     style={styles.smallSquare}
                   />
                 </View>
@@ -145,8 +144,8 @@ export function SelectDrugDistributionScreen({ route, navigation }: Props) {
                 <View style={styles.iconSingle}>
                   <LinearGradient
                     colors={["#F4F4F4", "#E2E2E2"]}
-                    start={{ x: 0.5, y: 0 }}
-                    end={{ x: 0.5, y: 1 }}
+                    start={{ x: 0.5, y: 1 }}
+                    end={{ x: 0.5, y: 0 }}
                     style={styles.bigSquare}
                   />
                 </View>

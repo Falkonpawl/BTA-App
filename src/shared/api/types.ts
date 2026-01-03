@@ -46,10 +46,10 @@ export interface User {
   u_upper?: string;
   b_comments?: string[]; // Array of booking comment IDs
   b_services?: string[]; // Array of service IDs
-  b_location_classes?: Array<{
+  b_location_classes?: {
     b_location_class: string;
     basic: string; // "0" or "1"
-  }>;
+  }[];
   sc_id?: string; // Schedule ID
   props?: Record<string, any[]>; // User properties
 }

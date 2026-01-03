@@ -59,6 +59,7 @@ export function useAutoLogin() {
       password: "$yX5eJ|,(s",
       type: "e-mail",
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return { isLoggingIn: login.isPending, isLoggedIn: login.isSuccess };

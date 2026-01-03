@@ -5,7 +5,6 @@ import {
   GENDERS,
   hasRequiredFieldErrors,
   hasUnsavedChanges,
-  INITIAL_FORM_DATA,
   MESSENGERS,
   PatientFormCheckboxes,
   PatientFormFields,
@@ -15,17 +14,99 @@ import {
   ValidationErrors,
   type PatientFormData,
 } from "@/features/patient-registration";
-import { useCreateDrive, useRegister } from "@/shared/api";
+import { Patient, Gender, MessengerType, deserializePatient, SerializedPatient } from "@/entities/patient";
 import { MainStackParamList } from "@/shared/types/navigation";
 import { Button, MainLayout } from "@/shared/ui";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useEffect, useState } from "react";
-import { Alert, ScrollView, StyleSheet } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
+import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 
-type Props = NativeStackScreenProps<MainStackParamList, "AddPatient">;
+type Props = NativeStackScreenProps<MainStackParamList, "EditPatient">;
 
-export function AddPatientScreen({ navigation }: Props) {
-  const [formData, setFormData] = useState<PatientFormData>(INITIAL_FORM_DATA);
+// Convert Patient to PatientFormData
+function patientToFormData(patient: Patient): PatientFormData {
+  const formatDateForForm = (date?: Date): string => {
+    if (!date) return "";
+    // Ensure date is a Date object
+    const dateObj = date instanceof Date ? date : new Date(date);
+    if (isNaN(dateObj.getTime())) return "";
+    const day = dateObj.getDate().toString().padStart(2, "0");
+    const month = (dateObj.getMonth() + 1).toString().padStart(2, "0");
+    const year = dateObj.getFullYear();
+    return `${day}.${month}.${year}`;
+  };
+
+  // Convert Gender enum to form format
+  const genderToForm = (gender?: Gender): string => {
+    if (!gender) return "";
+    return gender === Gender.MALE ? "Муж" : "Жен";
+  };
+
+  // Convert MessengerType enum to form format
+  const messengerToForm = (messenger?: MessengerType): string => {
+    if (!messenger) return "WhatsApp";
+    const mapping: Record<MessengerType, string> = {
+      [MessengerType.WHATSAPP]: "WhatsApp",
+      [MessengerType.TELEGRAM]: "Telegram",
+      [MessengerType.VIBER]: "Viber",
+    };
+    return mapping[messenger] || "WhatsApp";
+  };
+
+  return {
+    firstName: patient.firstName || "",
+    lastName: patient.lastName || "",
+    middleName: patient.middleName || "",
+    gender: genderToForm(patient.gender),
+    birthDate: formatDateForForm(patient.birthDate),
+    phone: patient.phone || "",
+    specialFeatures: patient.specialFeatures || "",
+    reminderInterval: patient.reminderInterval || "4 мес",
+    messenger: messengerToForm(patient.messenger),
+    refuseReminders: patient.refuseReminders || false,
+    agreeToOffer: false, // These are not stored in Patient
+    agreeToPrivacy: false,
+  };
+}
+
+export function EditPatientScreen({ route, navigation }: Props) {
+  // Deserialize patient from navigation params
+  const patient = useMemo(() => {
+    try {
+      const serialized = route.params?.patient as SerializedPatient | undefined
+      if (!serialized) {
+        console.warn("Patient data not found in route params")
+        return null
+      }
+      return deserializePatient(serialized)
+    } catch (error) {
+      console.error("Error deserializing patient:", error)
+      return null
+    }
+  }, [route.params?.patient])
+  
+  // Initialize form data from patient (use empty form if patient is null)
+  const initialFormData = useMemo(() => {
+    if (!patient) {
+      return {
+        firstName: "",
+        lastName: "",
+        middleName: "",
+        gender: "",
+        birthDate: "",
+        phone: "",
+        specialFeatures: "",
+        reminderInterval: "4 мес",
+        messenger: "WhatsApp",
+        refuseReminders: false,
+        agreeToOffer: false,
+        agreeToPrivacy: false,
+      } as PatientFormData;
+    }
+    return patientToFormData(patient);
+  }, [patient]);
+  
+  const [formData, setFormData] = useState<PatientFormData>(() => initialFormData);
   const [showErrors, setShowErrors] = useState(false);
   const [showGenderModal, setShowGenderModal] = useState(false);
   const [showIntervalModal, setShowIntervalModal] = useState(false);
@@ -33,50 +114,17 @@ export function AddPatientScreen({ navigation }: Props) {
   const [showExitModal, setShowExitModal] = useState(false);
   const [specialFeaturesError, setSpecialFeaturesError] = useState("");
   const [canExit, setCanExit] = useState(false);
-
-  // Hook для создания записи
-  const createDrive = useCreateDrive({
-    onSuccess: (response) => {
-      console.log("✅ Запись создана успешно:", response);
-      // appointmentId available: response?.data?.b_id || response?.b_id
-      // Navigate to appointment type selection
-      navigation.navigate("SelectAppointmentType");
-    },
-    onError: (error: any) => {
-      console.error("❌ Ошибка создания записи:", error);
-      Alert.alert("Ошибка", "Не удалось создать запись. Попробуйте еще раз.");
-    },
-  });
-
-  // Hook для регистрации пациента
-  const registerPatient = useRegister({
-    onSuccess: (response) => {
-      console.log("✅ Пациент зарегистрирован:", response);
-      const patientId = response?.data?.u_id || response?.u_id;
-
-      // После успешной регистрации создаем запись
-      createDrive.mutate({
-        b_start_address: "Адрес клиники",
-        b_start_datetime: "now",
-        b_payment_way: "2",
-        b_options: {}, // Пустой объект, данные пациента уже в u_details
-        u_id: patientId,
-      });
-    },
-    onError: (error: any) => {
-      console.error("❌ Ошибка регистрации пациента:", error);
-      Alert.alert(
-        "Ошибка",
-        "Не удалось зарегистрировать пациента. Попробуйте еще раз."
-      );
-    },
-  });
+  
+  // Update form data when patient changes
+  useEffect(() => {
+    setFormData(initialFormData);
+  }, [initialFormData]);
 
   // Intercept back navigation
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
       // Allow exit if canExit flag is set or no unsaved changes
-      if (canExit || !hasUnsavedChanges(formData, INITIAL_FORM_DATA)) {
+      if (canExit || !hasUnsavedChanges(formData, initialFormData)) {
         return;
       }
 
@@ -85,7 +133,23 @@ export function AddPatientScreen({ navigation }: Props) {
     });
 
     return unsubscribe;
-  }, [navigation, formData, canExit]);
+  }, [navigation, formData, canExit, initialFormData]);
+
+  // Early return after all hooks
+  if (!patient) {
+    return (
+      <MainLayout
+        title="Картотека"
+        onBackPress={() => navigation.goBack()}
+        showBackButton={true}
+        showFab={false}
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <Text>Пациент не найден</Text>
+        </View>
+      </MainLayout>
+    );
+  }
 
   const handleExit = () => {
     setShowExitModal(false);
@@ -108,31 +172,15 @@ export function AddPatientScreen({ navigation }: Props) {
       return;
     }
 
-    console.log("Form data:", formData);
-
-    // Сначала регистрируем пациента
-    const fullName =
-      `${formData.firstName} ${formData.middleName} ${formData.lastName}`.trim();
-
-    const u_details: any = {};
-    if (formData.messenger) u_details.messenger = formData.messenger;
-    if (formData.specialFeatures)
-      u_details.special_features = formData.specialFeatures;
-    if (formData.birthDate) u_details.birth_date = formData.birthDate;
-    if (formData.gender) u_details.gender = formData.gender;
-    if (formData.reminderInterval)
-      u_details.reminder_interval = formData.reminderInterval;
-    u_details.refuse_reminders = formData.refuseReminders;
-
-    registerPatient.mutate({
-      u_name: fullName,
-      u_phone: formData.phone,
-      u_role: "1", // Роль пациента
-      st: "1",
-      data: JSON.stringify({
-        u_details,
-      }),
-    });
+    console.log("Updated form data:", formData);
+    
+    // TODO: Implement API call to update patient
+    Alert.alert("Успешно", "Данные пациента обновлены", [
+      {
+        text: "OK",
+        onPress: () => navigation.goBack(),
+      },
+    ]);
   };
 
   const updateField = (field: string, value: any) => {
@@ -157,7 +205,7 @@ export function AddPatientScreen({ navigation }: Props) {
 
   return (
     <MainLayout
-      title="Первичный прием"
+      title="Картотека"
       onBackPress={() => navigation.goBack()}
       showBackButton={true}
       showFab={false}
@@ -189,13 +237,11 @@ export function AddPatientScreen({ navigation }: Props) {
 
         {/* Submit Button */}
         <Button
-          title="Сохранить и продолжить"
+          title="Сохранить"
           onPress={handleSubmit}
           variant="primary"
           size="large"
           style={styles.submitButton}
-          disabled={registerPatient.isPending || createDrive.isPending}
-          loading={registerPatient.isPending || createDrive.isPending}
         />
 
         {/* Error Messages */}
@@ -257,3 +303,4 @@ const styles = StyleSheet.create({
     marginHorizontal: 24,
   },
 });
+

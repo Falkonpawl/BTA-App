@@ -37,7 +37,7 @@ export function SelectInjectionIntensityScreen({ route, navigation }: Props) {
     route.params;
   const [selectedIntensity, setSelectedIntensity] =
     useState<IntensityOption | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
+  // activeIndex available but unused: const [activeIndex, setActiveIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const [zoneIntensities, setZoneIntensities] = useState<
     Record<string, IntensityOption>

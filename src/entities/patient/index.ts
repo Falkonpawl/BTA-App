@@ -5,8 +5,10 @@ export {
   MessengerType,
   REMINDER_INTERVALS,
   userToPatient,
+  serializePatient,
+  deserializePatient,
 } from "./model";
-export type { Patient } from "./model";
+export type { Patient, SerializedPatient } from "./model";
 export {
   PatientCard,
   getCardGradientType,

@@ -1,4 +1,5 @@
 import { Appointment, AppointmentType } from "@/src/entities/appointment";
+import { AppointmentLogEntry } from "@/entities/appointment-log/model";
 import { Patient, Gender, MessengerType } from "@/entities/patient";
 
 export const mockAppointments: Appointment[] = [
@@ -116,9 +117,9 @@ export const mockPatients: Patient[] = [
     birthDate: new Date(1997, 3, 14), // 14 апр 1997
     phone: "+7 983 999 88 32",
     imageUrl: require("../../II/Rectangle 28.png"),
-    specialFeatures: "Особенности пациента",
+    specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
     reminderInterval: "4 мес",
-    messenger: MessengerType.WHATSAPP,
+    messenger: MessengerType.TELEGRAM,
     refuseReminders: false,
     createdAt: new Date(2023, 2, 15),
     updatedAt: new Date(2024, 9, 20),
@@ -132,7 +133,7 @@ export const mockPatients: Patient[] = [
     birthDate: new Date(1995, 5, 22), // 22 июн 1995
     phone: "+7 983 999 88 33",
     imageUrl: require("../../II/Rectangle 28.png"),
-    specialFeatures: "",
+    specialFeatures: "Особые требования к процедуре, аллергия на некоторые препараты",
     reminderInterval: "6 мес",
     messenger: MessengerType.TELEGRAM,
     refuseReminders: true, // Красная иконка будильника
@@ -196,7 +197,7 @@ export const mockPatients: Patient[] = [
     birthDate: new Date(1990, 7, 25), // 25 авг 1990
     phone: "+7 912 345 67 89",
     imageUrl: require("../../II/Rectangle 28.png"),
-    specialFeatures: "Особенности пациента",
+    specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
     reminderInterval: "3 мес",
     messenger: MessengerType.WHATSAPP,
     refuseReminders: false,
@@ -218,4 +219,137 @@ export const mockPatients: Patient[] = [
     createdAt: new Date(2023, 2, 8),
     updatedAt: new Date(2024, 8, 15),
   },
+  {
+    id: "8",
+    firstName: "Олег",
+    lastName: "Иванов",
+    middleName: "Евгеньевич",
+    gender: Gender.MALE,
+    birthDate: new Date(1997, 3, 14), // 14 апр 1997
+    phone: "+7 983 999 88 32",
+    imageUrl: require("../../II/Rectangle 28.png"),
+    specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
+    reminderInterval: "4 мес",
+    messenger: MessengerType.TELEGRAM,
+    refuseReminders: false,
+    createdAt: new Date(2025, 7, 14), // 14 авг 2025
+    updatedAt: new Date(2025, 7, 14),
+  },
 ];
+
+// Моковые данные для журнала приемов
+// Ключ - ID пациента, значение - массив записей в журнале
+export const mockAppointmentLogs: Record<string, AppointmentLogEntry[]> = {
+  // Иванов Олег Евгеньевич (id: "8")
+  "8": [
+    {
+      id: "log-1",
+      patientId: "8",
+      type: AppointmentType.PRIMARY,
+      status: "scheduled",
+      date: new Date(2024, 8, 24), // 24 сент
+      time: "12:00",
+    },
+    {
+      id: "log-2",
+      patientId: "8",
+      type: AppointmentType.PRIMARY,
+      status: "completed",
+      date: new Date(2024, 8, 4), // 04 сент
+      time: "12:00",
+      treatment: {
+        drugName: "Ботулотоксин типа А",
+        units: 36,
+        zones: ["Лоб", "шея", "глаза"],
+      },
+      photos: [
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+      ],
+    },
+    {
+      id: "log-3",
+      patientId: "8",
+      type: AppointmentType.CHECKUP,
+      status: "completed",
+      date: new Date(2024, 7, 4), // 04 авг
+      time: "12:00",
+      treatment: {
+        drugName: "Ботулотоксин типа А",
+        units: 16,
+        zones: ["Межбровье"],
+      },
+      photos: [
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+      ],
+      aiAssistantUsed: true,
+      note: "Проведена коррекция зон с ИИ-ассистентом",
+    },
+    {
+      id: "log-4",
+      patientId: "8",
+      type: AppointmentType.CHECKUP,
+      status: "completed",
+      date: new Date(2024, 7, 4), // 04 авг
+      time: "12:00",
+      treatment: {
+        drugName: "Ботулотоксин типа А",
+        units: 16,
+        zones: ["Межбровье"],
+      },
+      photos: [
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+      ],
+      aiAssistantUsed: false,
+      note: "Проведена коррекция зон без помощи ИИ-ассистента",
+    },
+  ],
+  // Кирпичникова Апполинария (id: "1")
+  "1": [
+    {
+      id: "log-5",
+      patientId: "1",
+      type: AppointmentType.PRIMARY,
+      status: "completed",
+      date: new Date(2024, 8, 15),
+      time: "14:00",
+      treatment: {
+        drugName: "Ботулотоксин типа А",
+        units: 40,
+        zones: ["Лоб", "глаза"],
+      },
+      photos: [
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+      ],
+    },
+  ],
+  // Иванова Анна Петровна (id: "2")
+  "2": [
+    {
+      id: "log-6",
+      patientId: "2",
+      type: AppointmentType.REPEAT,
+      status: "completed",
+      date: new Date(2024, 7, 20),
+      time: "10:00",
+      treatment: {
+        drugName: "Ботулотоксин типа А",
+        units: 30,
+        zones: ["Лоб", "шея"],
+      },
+      photos: [
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+        "http://localhost:3845/assets/ce739be934177bcc1784def31431ae09e1b3c8c6.png",
+      ],
+    },
+  ],
+  // Остальные пациенты не имеют записей (для демонстрации пустого состояния)
+};

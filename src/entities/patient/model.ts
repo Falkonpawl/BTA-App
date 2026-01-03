@@ -74,3 +74,55 @@ function mapMessengerType(user: any): MessengerType | undefined {
   if (user.u_tg) return MessengerType.TELEGRAM;
   return undefined;
 }
+
+// Serialized Patient type for navigation (Date objects converted to ISO strings)
+export interface SerializedPatient {
+  id: string;
+  firstName: string;
+  lastName?: string;
+  middleName?: string;
+  gender?: Gender;
+  birthDate?: string; // ISO string instead of Date
+  phone: string;
+  specialFeatures?: string;
+  reminderInterval?: string;
+  messenger?: MessengerType;
+  refuseReminders?: boolean;
+  imageUrl?: string | number;
+  createdAt: string; // ISO string instead of Date
+  updatedAt: string; // ISO string instead of Date
+}
+
+// Convert Patient to serializable format for navigation
+export function serializePatient(patient: Patient): SerializedPatient {
+  return {
+    ...patient,
+    birthDate: patient.birthDate?.toISOString(),
+    createdAt: patient.createdAt.toISOString(),
+    updatedAt: patient.updatedAt.toISOString(),
+  };
+}
+
+// Convert serialized Patient back to Patient with Date objects
+export function deserializePatient(serialized: SerializedPatient | Patient): Patient {
+  // If already deserialized (has Date objects), return as is
+  if (serialized.createdAt instanceof Date) {
+    return serialized as Patient;
+  }
+
+  // Helper function to safely create Date from string
+  const safeDate = (dateString: string | undefined): Date => {
+    if (!dateString) return new Date();
+    const date = new Date(dateString);
+    // If date is invalid, return current date as fallback
+    return isNaN(date.getTime()) ? new Date() : date;
+  };
+
+  const s = serialized as SerializedPatient;
+  return {
+    ...s,
+    birthDate: s.birthDate ? safeDate(s.birthDate) : undefined,
+    createdAt: safeDate(s.createdAt),
+    updatedAt: safeDate(s.updatedAt),
+  };
+}

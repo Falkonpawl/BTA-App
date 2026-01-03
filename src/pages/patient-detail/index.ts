@@ -1,0 +1,2 @@
+export { PatientDetailPage } from "./ui";
+
