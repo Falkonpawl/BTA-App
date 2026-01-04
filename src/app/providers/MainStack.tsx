@@ -2,7 +2,6 @@ import { MainStackParamList } from "@/shared/types/navigation";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 
-// Импортируем страницы
 import { AddPatientScreen } from "@/pages/add-patient";
 import { AppointmentDetailPage } from "@/pages/appointment-detail";
 import { AppointmentSuccessScreen } from "@/pages/appointment-success";
@@ -27,9 +26,6 @@ import { AppointmentLogPage } from "@/pages/appointment-log";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
-/**
- * MainStack - основной стек навигации приложения
- */
 export function MainStack() {
   return (
     <Stack.Navigator

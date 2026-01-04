@@ -34,12 +34,9 @@ export function AddPatientScreen({ navigation }: Props) {
   const [specialFeaturesError, setSpecialFeaturesError] = useState("");
   const [canExit, setCanExit] = useState(false);
 
-  // Hook для создания записи
   const createDrive = useCreateDrive({
     onSuccess: (response) => {
       console.log("✅ Запись создана успешно:", response);
-      // appointmentId available: response?.data?.b_id || response?.b_id
-      // Navigate to appointment type selection
       navigation.navigate("SelectAppointmentType");
     },
     onError: (error: any) => {
@@ -48,13 +45,20 @@ export function AddPatientScreen({ navigation }: Props) {
     },
   });
 
-  // Hook для регистрации пациента
   const registerPatient = useRegister({
     onSuccess: (response) => {
       console.log("✅ Пациент зарегистрирован:", response);
       const patientId = response?.data?.u_id || response?.u_id;
 
-      // После успешной регистрации создаем запись
+      if (!patientId) {
+        console.error("❌ Ошибка: patientId не найден в ответе регистрации", response);
+        Alert.alert(
+          "Ошибка",
+          "Не удалось получить ID пациента. Попробуйте еще раз."
+        );
+        return;
+      }
+
       createDrive.mutate({
         b_start_address: "Адрес клиники",
         b_start_datetime: "now",
@@ -72,10 +76,8 @@ export function AddPatientScreen({ navigation }: Props) {
     },
   });
 
-  // Intercept back navigation
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
-      // Allow exit if canExit flag is set or no unsaved changes
       if (canExit || !hasUnsavedChanges(formData, INITIAL_FORM_DATA)) {
         return;
       }
@@ -90,7 +92,6 @@ export function AddPatientScreen({ navigation }: Props) {
   const handleExit = () => {
     setShowExitModal(false);
     setCanExit(true);
-    // Use setTimeout to ensure state is updated before navigation
     setTimeout(() => {
       navigation.goBack();
     }, 0);
@@ -110,7 +111,6 @@ export function AddPatientScreen({ navigation }: Props) {
 
     console.log("Form data:", formData);
 
-    // Сначала регистрируем пациента
     const fullName =
       `${formData.firstName} ${formData.middleName} ${formData.lastName}`.trim();
 
@@ -138,7 +138,6 @@ export function AddPatientScreen({ navigation }: Props) {
   const updateField = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Validate special features in real-time
     if (field === "specialFeatures") {
       const error = validateSpecialFeatures(value);
       setSpecialFeaturesError(error);
@@ -166,7 +165,6 @@ export function AddPatientScreen({ navigation }: Props) {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        {/* Form Fields */}
         <PatientFormFields
           formData={formData}
           showErrors={showErrors}
@@ -179,7 +177,6 @@ export function AddPatientScreen({ navigation }: Props) {
           onOpenMessengerModal={() => setShowMessengerModal(true)}
         />
 
-        {/* Checkboxes */}
         <PatientFormCheckboxes
           refuseReminders={formData.refuseReminders}
           agreeToOffer={formData.agreeToOffer}
@@ -187,7 +184,6 @@ export function AddPatientScreen({ navigation }: Props) {
           onUpdateField={updateField}
         />
 
-        {/* Submit Button */}
         <Button
           title="Сохранить и продолжить"
           onPress={handleSubmit}
@@ -198,7 +194,6 @@ export function AddPatientScreen({ navigation }: Props) {
           loading={registerPatient.isPending || createDrive.isPending}
         />
 
-        {/* Error Messages */}
         {showErrors && (
           <ValidationErrors
             hasRequiredErrors={hasRequiredFieldErrors(formData)}
@@ -207,7 +202,6 @@ export function AddPatientScreen({ navigation }: Props) {
         )}
       </ScrollView>
 
-      {/* Gender Selection Modal */}
       <SelectionModal
         visible={showGenderModal}
         title="Выберите пол"
@@ -217,7 +211,6 @@ export function AddPatientScreen({ navigation }: Props) {
         onClose={() => setShowGenderModal(false)}
       />
 
-      {/* Reminder Interval Modal */}
       <SelectionModal
         visible={showIntervalModal}
         title="Выберите интервал"
@@ -227,7 +220,6 @@ export function AddPatientScreen({ navigation }: Props) {
         onClose={() => setShowIntervalModal(false)}
       />
 
-      {/* Messenger Selection Modal */}
       <SelectionModal
         visible={showMessengerModal}
         title="Выберите мессенджер"
@@ -237,7 +229,6 @@ export function AddPatientScreen({ navigation }: Props) {
         onClose={() => setShowMessengerModal(false)}
       />
 
-      {/* Exit Confirmation Modal */}
       <ExitConfirmationModal
         visible={showExitModal}
         onStay={() => setShowExitModal(false)}

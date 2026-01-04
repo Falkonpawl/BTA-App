@@ -31,19 +31,11 @@ export function HomePage({ navigation }: Props) {
     },
   })
 
-  // Fetch performer's active appointments (u_a_role: 2)
   const performerDrives = usePerformerActiveDrives({
     refetchOnMount: true,
     refetchOnWindowFocus: false,
   })
 
-  // Fetch trips waiting for clients (currently unused)
-  // const tripsNow = useTripsNow(undefined, {
-  //   refetchOnMount: true,
-  //   refetchOnWindowFocus: false,
-  // })
-
-  // Convert API drives to appointments
   const appointments = useMemo(() => {
     const apiData = performerDrives.data?.data || performerDrives.data
     const bookings = apiData?.booking
@@ -51,15 +43,12 @@ export function HomePage({ navigation }: Props) {
     console.log("📋 Converting drives to appointments:", bookings)
 
     if (bookings && Array.isArray(bookings)) {
-      // Если массив пустой - показываем пустой список, не моки
       return bookings.map(driveToAppointment)
     }
 
-    // Если данных нет совсем (ошибка загрузки), показываем пустой список
     return []
   }, [performerDrives.data])
 
-  // Показываем уведомление через 2 секунды после получения координат кнопки
   useEffect(() => {
     if (notificationButtonPos) {
       const timer = setTimeout(() => {
@@ -71,13 +60,11 @@ export function HomePage({ navigation }: Props) {
 
   const handleAppointmentPress = (appointment: Appointment) => {
     console.log("Appointment pressed:", appointment)
-    // Navigate to appointment details
     navigation.navigate("AppointmentDetail", { appointmentId: appointment.id })
   }
 
   const handleArchivePress = () => {
     console.log("Archive pressed")
-    // Navigate to archive
     navigation.navigate("Archive")
   }
 
@@ -89,22 +76,18 @@ export function HomePage({ navigation }: Props) {
         navigation.navigate("AddPatient")
         break
       case "checkup":
-        // TODO: Navigate to checkup
         console.log("Checkup action")
         break
       case "repeat-appointment":
-        // TODO: Navigate to repeat appointment
         console.log("Repeat appointment action")
         break
       case "calendar":
-        // TODO: Navigate to calendar
         console.log("Calendar action")
         break
       case "files":
         navigation.navigate("Cartoteka")
         break
       case "education":
-        // TODO: Navigate to education
         console.log("Education action")
         break
       default:
@@ -125,13 +108,11 @@ export function HomePage({ navigation }: Props) {
   const handlePayPress = () => {
     console.log("Pay pressed")
     setShowSubscriptionModal(false)
-    // Navigate to payment
   }
 
   const handleNotifyPatient = () => {
     console.log("Notify patient pressed")
     setShowNotification(false)
-    // Отправить уведомление пациенту
   }
 
   const handleNotificationButtonLayout = (x: number, y: number) => {

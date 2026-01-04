@@ -11,22 +11,10 @@ type Props = NativeStackScreenProps<MainStackParamList, "SelectTotalDosage">;
 
 export function SelectTotalDosageScreen({ route, navigation }: Props) {
   const { appointmentType, selectedZones, photos } = route.params;
-  // drugName available: route.params.drugName
-  // totalDosage and setTotalDosage available but unused
-  // const [totalDosage, setTotalDosage] = useState(0);
+  const [totalDosage] = useState(0);
   const [skipInFuture, setSkipInFuture] = useState(false);
 
-  // handleDosageChange available but unused
-  // const handleDosageChange = (increment: boolean) => {
-  //   if (increment) {
-  //     setTotalDosage((prev) => prev + 1);
-  //   } else {
-  //     setTotalDosage((prev) => Math.max(0, prev - 1));
-  //   }
-  // };
-
   const handleConfirm = () => {
-    // Navigate to injection points marking
     navigation.navigate("InjectionPoints", {
       appointmentType,
       selectedZones,
@@ -35,8 +23,6 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
     });
   };
 
-  // screenWidth and screenHeight available: Dimensions.get("window")
-
   return (
     <MainLayout
       title="Первичный прием"
@@ -44,15 +30,12 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
       showFab={false}
     >
       <View style={styles.container}>
-        {/* Icon */}
         <View style={styles.iconContainer}>
           <SyringeIcon />
         </View>
 
-        {/* Title */}
         <Text style={styles.title}>Один шприц с общей дозой</Text>
 
-        {/* Syringe Visualization */}
         <View style={styles.syringeContainer}>
           <View style={styles.syringeCircle}>
             <View style={styles.syringeWrapper}>
@@ -61,7 +44,6 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
               </View>
               <SyringeDozaIcon />
             </View>
-            {/* Dosage Badge */}
             <View style={styles.dosageBadge}>
               <Text style={styles.dosageText}>
                 {totalDosage} <Text style={styles.dosageUnit}>ед.</Text>
@@ -70,7 +52,6 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
           </View>
         </View>
 
-        {/* Skip in future toggle */}
         <View style={styles.skipContainer}>
           <Text style={styles.skipText}>Пропускать этот этап в дальнейшем</Text>
           <Switch
@@ -83,7 +64,6 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
           />
         </View>
 
-        {/* Confirm button */}
         <View style={styles.buttonContainer}>
           <Button
             title="Начать процедуру"
@@ -94,7 +74,6 @@ export function SelectTotalDosageScreen({ route, navigation }: Props) {
           />
         </View>
 
-        {/* Help text */}
         <Text style={styles.helpText}>Требуется помощь?</Text>
       </View>
     </MainLayout>

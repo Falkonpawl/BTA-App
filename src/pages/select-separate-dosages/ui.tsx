@@ -21,23 +21,10 @@ type Props = NativeStackScreenProps<
 
 export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
   const { appointmentType, selectedZones, photos } = route.params;
-  // drugName available: route.params.drugName
-  // zoneDosages and setZoneDosages available but unused
-  // const [zoneDosages, setZoneDosages] = useState<Record<string, number>>({});
+  const [zoneDosages] = useState<Record<string, number>>({});
   const [skipInFuture, setSkipInFuture] = useState(false);
 
-  // handleDosageChange available but unused
-  // const handleDosageChange = (zoneId: string, increment: boolean) => {
-  //   setZoneDosages((prev) => ({
-  //     ...prev,
-  //     [zoneId]: increment
-  //       ? (prev[zoneId] || 0) + 1
-  //       : Math.max(0, (prev[zoneId] || 0) - 1),
-  //   }));
-  // };
-
   const handleConfirm = () => {
-    // Navigate to injection points marking
     navigation.navigate("InjectionPoints", {
       appointmentType,
       selectedZones,
@@ -46,8 +33,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
     });
   };
 
-  // screenWidth and screenHeight available: Dimensions.get("window")
-
   return (
     <MainLayout
       title="Первичный прием"
@@ -55,9 +40,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
       showFab={false}
     >
       <View style={styles.container}>
-        {/* Icon */}
-
-        {/* Zones with Syringes - Scrollable */}
         <ScrollView
           style={styles.scrollView}
           showsVerticalScrollIndicator={false}
@@ -67,7 +49,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
             <SyringeIcon />
           </View>
 
-          {/* Title */}
           <Text style={styles.title}>Отдельный шприц на каждую зону</Text>
           {selectedZones.map((zoneId, index) => {
             const zone = INJECTION_ZONES.find((z) => z.id === zoneId);
@@ -77,7 +58,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
 
             return (
               <View key={zoneId} style={styles.zoneSection}>
-                {/* Zone Badge */}
                 <View style={styles.zoneBadge}>
                   <View style={styles.zoneBadgeNumberContainer}>
                     <Text style={styles.zoneBadgeNumber}>{index + 1}</Text>
@@ -85,7 +65,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
                   <Text style={styles.zoneBadgeText}>{zone.name}</Text>
                 </View>
 
-                {/* Syringe Visualization */}
                 <View style={styles.syringeContainer}>
                   <View style={styles.syringeCircle}>
                     <View style={styles.syringeWrapper}>
@@ -94,7 +73,6 @@ export function SelectSeparateDosagesScreen({ route, navigation }: Props) {
                       </View>
                       <SyringeDozaIcon />
                     </View>
-                    {/* Dosage Badge */}
                     <View style={styles.dosageBadge}>
                       <Text style={styles.dosageText}>
                         {dosage} <Text style={styles.dosageUnit}>ед.</Text>

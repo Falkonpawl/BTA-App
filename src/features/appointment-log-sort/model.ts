@@ -27,3 +27,4 @@ export function getAppointmentLogSortLabel(
   return found ? found.label : "По дате, новые";
 }
 
+

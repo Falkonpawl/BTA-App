@@ -17,3 +17,4 @@ export interface AppointmentLogEntry {
   note?: string;
 }
 
+

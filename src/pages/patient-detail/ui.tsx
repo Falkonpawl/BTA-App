@@ -30,7 +30,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
   route,
   navigation,
 }) => {
-  // Deserialize patient from navigation params
   const patient = useMemo(() => {
     try {
       const serialized = route.params?.patient as SerializedPatient | undefined
@@ -48,7 +47,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
   const [timer, setTimer] = useState(7)
   const [showDeletionBanner, setShowDeletionBanner] = useState(true)
 
-  // Check if patient data is fully filled (must be before other useMemos that use it)
   const isFullyFilled = useMemo(() => {
     if (!patient) return false
     return !!(
@@ -62,7 +60,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     )
   }, [patient])
 
-  // Get appointment photos for this patient
   const appointmentPhotos = useMemo(() => {
     if (!patient) return []
     const fullName = getFullName(patient)
@@ -76,15 +73,12 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     return photos
   }, [patient])
 
-  // Determine what to show: real photos, placeholder PNGs, or single SVG
   const photosToDisplay = useMemo(() => {
     if (appointmentPhotos.length > 0) {
-      // If there are real appointment photos, show them (up to 3)
       return appointmentPhotos
         .slice(0, 3)
         .map((url) => ({ type: "url" as const, source: url }))
     } else if (isFullyFilled) {
-      // If fully filled but no photos, show 3 PNG placeholders
       const placeholderImage = require("../../II/Rectangle 28.png")
       return [
         { type: "require" as const, source: placeholderImage },
@@ -92,12 +86,10 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
         { type: "require" as const, source: placeholderImage },
       ]
     } else {
-      // If not fully filled and no photos, show single SVG placeholder
       return [{ type: "svg" as const }]
     }
   }, [appointmentPhotos, isFullyFilled])
 
-  // Timer effect (must be before conditional return)
   useEffect(() => {
     if (showDeleteModal && timer > 0) {
       const interval = setInterval(() => {
@@ -113,7 +105,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     }
   }, [showDeleteModal, timer])
 
-  // Check if patient is inactive (no appointments for more than 2 years)
   const isInactive = useMemo(() => {
     if (!patient) return false
 
@@ -123,14 +114,10 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     const fullName = getFullName(patient)
     const patientAppointments = mockAppointments.filter(
       (apt) => apt.patientName === fullName
-    )
+    }
+  }, [patient])
 
-    if (patientAppointments.length === 0) {
-      // No appointments at all - check by updatedAt
-      return patient.updatedAt && patient.updatedAt < twoYearsAgo
-    } else {
-      // Find most recent appointment
-      const lastAppointment = patientAppointments.reduce((latest, current) =>
+  const deletionDate = useMemo(() => {
         current.date > latest.date ? current : latest
       )
       return lastAppointment.date < twoYearsAgo
