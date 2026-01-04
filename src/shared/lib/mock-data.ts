@@ -116,7 +116,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1997, 3, 14), // 14 апр 1997
     phone: "+7 983 999 88 32",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
     reminderInterval: "4 мес",
     messenger: MessengerType.TELEGRAM,
@@ -132,7 +132,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1995, 5, 22), // 22 июн 1995
     phone: "+7 983 999 88 33",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "Особые требования к процедуре, аллергия на некоторые препараты",
     reminderInterval: "6 мес",
     messenger: MessengerType.TELEGRAM,
@@ -148,7 +148,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1992, 8, 5), // 5 сен 1992
     phone: "+7 983 999 88 34",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "",
     reminderInterval: "4 мес",
     messenger: MessengerType.WHATSAPP,
@@ -164,7 +164,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1998, 0, 18), // 18 янв 1998
     phone: "+7 983 999 88 35",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "Особенности",
     reminderInterval: "4 мес",
     messenger: MessengerType.WHATSAPP,
@@ -180,7 +180,6 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1996, 11, 30), // 30 дек 1996
     phone: "+7 983 999 88 36",
-    // Нет фото - желтая карточка
     specialFeatures: "",
     reminderInterval: "6 мес",
     messenger: MessengerType.TELEGRAM,
@@ -196,7 +195,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.FEMALE,
     birthDate: new Date(1990, 7, 25), // 25 авг 1990
     phone: "+7 912 345 67 89",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
     reminderInterval: "3 мес",
     messenger: MessengerType.WHATSAPP,
@@ -208,10 +207,8 @@ export const mockPatients: Patient[] = [
     id: "7",
     firstName: "Светлана",
     lastName: "Волкова",
-    // Нет отчества и даты рождения - желтая карточка
     gender: Gender.FEMALE,
     phone: "+7 987 654 32 10",
-    // Нет фото
     specialFeatures: "",
     reminderInterval: "6 мес",
     messenger: MessengerType.TELEGRAM,
@@ -227,7 +224,7 @@ export const mockPatients: Patient[] = [
     gender: Gender.MALE,
     birthDate: new Date(1997, 3, 14), // 14 апр 1997
     phone: "+7 983 999 88 32",
-    imageUrl: require("../../II/Rectangle 28.png"),
+    imageUrl: require("../../assets/images/placeholders/patient-placeholder.png"),
     specialFeatures: "Высокий уровень вовлечения представителей целевой аудитории является четким доказательством простого факта",
     reminderInterval: "4 мес",
     messenger: MessengerType.TELEGRAM,
@@ -237,10 +234,7 @@ export const mockPatients: Patient[] = [
   },
 ];
 
-// Моковые данные для журнала приемов
-// Ключ - ID пациента, значение - массив записей в журнале
 export const mockAppointmentLogs: Record<string, AppointmentLogEntry[]> = {
-  // Иванов Олег Евгеньевич (id: "8")
   "8": [
     {
       id: "log-1",
@@ -330,7 +324,6 @@ export const mockAppointmentLogs: Record<string, AppointmentLogEntry[]> = {
       ],
     },
   ],
-  // Иванова Анна Петровна (id: "2")
   "2": [
     {
       id: "log-6",
@@ -351,5 +344,4 @@ export const mockAppointmentLogs: Record<string, AppointmentLogEntry[]> = {
       ],
     },
   ],
-  // Остальные пациенты не имеют записей (для демонстрации пустого состояния)
 };

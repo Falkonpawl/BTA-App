@@ -161,7 +161,7 @@ export const AppointmentLogPage: React.FC<AppointmentLogScreenProps> = ({
                     source={
                       photo
                         ? { uri: photo }
-                        : require("../../II/Rectangle 28.png")
+                        : require("../../assets/images/placeholders/patient-placeholder.png")
                     }
                     style={styles.photo}
                     resizeMode="cover"

@@ -23,11 +23,9 @@ import { Alert, ScrollView, StyleSheet, Text, View } from "react-native";
 
 type Props = NativeStackScreenProps<MainStackParamList, "EditPatient">;
 
-// Convert Patient to PatientFormData
 function patientToFormData(patient: Patient): PatientFormData {
   const formatDateForForm = (date?: Date): string => {
     if (!date) return "";
-    // Ensure date is a Date object
     const dateObj = date instanceof Date ? date : new Date(date);
     if (isNaN(dateObj.getTime())) return "";
     const day = dateObj.getDate().toString().padStart(2, "0");
@@ -36,13 +34,11 @@ function patientToFormData(patient: Patient): PatientFormData {
     return `${day}.${month}.${year}`;
   };
 
-  // Convert Gender enum to form format
   const genderToForm = (gender?: Gender): string => {
     if (!gender) return "";
     return gender === Gender.MALE ? "Муж" : "Жен";
   };
 
-  // Convert MessengerType enum to form format
   const messengerToForm = (messenger?: MessengerType): string => {
     if (!messenger) return "WhatsApp";
     const mapping: Record<MessengerType, string> = {
@@ -70,7 +66,6 @@ function patientToFormData(patient: Patient): PatientFormData {
 }
 
 export function EditPatientScreen({ route, navigation }: Props) {
-  // Deserialize patient from navigation params
   const patient = useMemo(() => {
     try {
       const serialized = route.params?.patient as SerializedPatient | undefined
@@ -85,7 +80,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
     }
   }, [route.params?.patient])
   
-  // Initialize form data from patient (use empty form if patient is null)
   const initialFormData = useMemo(() => {
     if (!patient) {
       return {
@@ -115,15 +109,12 @@ export function EditPatientScreen({ route, navigation }: Props) {
   const [specialFeaturesError, setSpecialFeaturesError] = useState("");
   const [canExit, setCanExit] = useState(false);
   
-  // Update form data when patient changes
   useEffect(() => {
     setFormData(initialFormData);
   }, [initialFormData]);
 
-  // Intercept back navigation
   useEffect(() => {
     const unsubscribe = navigation.addListener("beforeRemove", (e) => {
-      // Allow exit if canExit flag is set or no unsaved changes
       if (canExit || !hasUnsavedChanges(formData, initialFormData)) {
         return;
       }
@@ -135,7 +126,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
     return unsubscribe;
   }, [navigation, formData, canExit, initialFormData]);
 
-  // Early return after all hooks
   if (!patient) {
     return (
       <MainLayout
@@ -154,7 +144,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
   const handleExit = () => {
     setShowExitModal(false);
     setCanExit(true);
-    // Use setTimeout to ensure state is updated before navigation
     setTimeout(() => {
       navigation.goBack();
     }, 0);
@@ -174,7 +163,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
 
     console.log("Updated form data:", formData);
     
-    // TODO: Implement API call to update patient
     Alert.alert("Успешно", "Данные пациента обновлены", [
       {
         text: "OK",
@@ -186,7 +174,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
   const updateField = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
 
-    // Validate special features in real-time
     if (field === "specialFeatures") {
       const error = validateSpecialFeatures(value);
       setSpecialFeaturesError(error);
@@ -214,7 +201,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
         style={styles.scrollView}
         showsVerticalScrollIndicator={false}
       >
-        {/* Form Fields */}
         <PatientFormFields
           formData={formData}
           showErrors={showErrors}
@@ -227,7 +213,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
           onOpenMessengerModal={() => setShowMessengerModal(true)}
         />
 
-        {/* Checkboxes */}
         <PatientFormCheckboxes
           refuseReminders={formData.refuseReminders}
           agreeToOffer={formData.agreeToOffer}
@@ -235,7 +220,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
           onUpdateField={updateField}
         />
 
-        {/* Submit Button */}
         <Button
           title="Сохранить"
           onPress={handleSubmit}
@@ -244,7 +228,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
           style={styles.submitButton}
         />
 
-        {/* Error Messages */}
         {showErrors && (
           <ValidationErrors
             hasRequiredErrors={hasRequiredFieldErrors(formData)}
@@ -253,7 +236,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
         )}
       </ScrollView>
 
-      {/* Gender Selection Modal */}
       <SelectionModal
         visible={showGenderModal}
         title="Выберите пол"
@@ -263,7 +245,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
         onClose={() => setShowGenderModal(false)}
       />
 
-      {/* Reminder Interval Modal */}
       <SelectionModal
         visible={showIntervalModal}
         title="Выберите интервал"
@@ -273,7 +254,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
         onClose={() => setShowIntervalModal(false)}
       />
 
-      {/* Messenger Selection Modal */}
       <SelectionModal
         visible={showMessengerModal}
         title="Выберите мессенджер"
@@ -283,7 +263,6 @@ export function EditPatientScreen({ route, navigation }: Props) {
         onClose={() => setShowMessengerModal(false)}
       />
 
-      {/* Exit Confirmation Modal */}
       <ExitConfirmationModal
         visible={showExitModal}
         onStay={() => setShowExitModal(false)}

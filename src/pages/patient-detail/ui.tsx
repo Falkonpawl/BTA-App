@@ -79,7 +79,7 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
         .slice(0, 3)
         .map((url) => ({ type: "url" as const, source: url }))
     } else if (isFullyFilled) {
-      const placeholderImage = require("../../II/Rectangle 28.png")
+      const placeholderImage = require("../../assets/images/placeholders/patient-placeholder.png")
       return [
         { type: "require" as const, source: placeholderImage },
         { type: "require" as const, source: placeholderImage },
@@ -124,7 +124,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     }
   }, [patient])
 
-  // Calculate deletion date (7 days from now)
   const deletionDate = useMemo(() => {
     const date = new Date()
     date.setDate(date.getDate() + 7)
@@ -150,7 +149,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
 
   const formatShortDate = (date?: Date) => {
     if (!date) return "---"
-    // Ensure date is a Date object
     const dateObj = date instanceof Date ? date : new Date(date)
     if (isNaN(dateObj.getTime())) return "---"
     const day = dateObj.getDate()
@@ -173,7 +171,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
   }
 
   const handleEditField = (fieldName: string) => {
-    // Navigate to edit page with serialized patient data
     navigation.navigate("EditPatient", { patient: serializePatient(patient) })
   }
 
@@ -207,7 +204,6 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     })
   }
 
-  // Format deletion date
   const formatDeletionDate = (date: Date) => {
     const day = date.getDate().toString().padStart(2, "0")
     const month = (date.getMonth() + 1).toString().padStart(2, "0")
@@ -885,7 +881,6 @@ const styles = StyleSheet.create({
     color: "#424242",
     textAlign: "center",
   },
-  // Deletion Banner Styles
   deletionBanner: {
     backgroundColor: "#D7131F",
     borderRadius: 12,
