@@ -114,14 +114,14 @@ export const PatientDetailPage: React.FC<PatientDetailScreenProps> = ({
     const fullName = getFullName(patient)
     const patientAppointments = mockAppointments.filter(
       (apt) => apt.patientName === fullName
-    }
-  }, [patient])
+    )
 
-  const deletionDate = useMemo(() => {
-        current.date > latest.date ? current : latest
-      )
-      return lastAppointment.date < twoYearsAgo
-    }
+    if (patientAppointments.length === 0) return false
+
+    const lastAppointment = patientAppointments.reduce((current, latest) =>
+      current.date > latest.date ? current : latest
+    )
+    return lastAppointment.date < twoYearsAgo
   }, [patient])
 
   const deletionDate = useMemo(() => {
